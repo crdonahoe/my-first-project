@@ -43,6 +43,13 @@
             letter-spacing: -0.02em;
         }
 
+        .greeting {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+
         .datetime {
             font-size: 1rem;
             font-weight: 500;
@@ -121,6 +128,7 @@
         .card.tasks li input[type="checkbox"] { accent-color: #3b82f6; }
         .card.notes li input[type="checkbox"] { accent-color: #22c55e; }
         .card.ideas li input[type="checkbox"] { accent-color: #8b5cf6; }
+        .card.goals li input[type="checkbox"] { accent-color: #f59e0b; }
 
         /* Dark mode toggle */
         .dark-toggle {
@@ -186,12 +194,19 @@
         body.dark .card li input[type="checkbox"]:checked + span {
             color: #475569;
         }
+
+        body.dark .greeting {
+            color: #94a3b8;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Chris's Dashboard</h1>
+            <div>
+                <p class="greeting" id="greeting">Good morning</p>
+                <h1>Chris's Dashboard</h1>
+            </div>
             <div class="datetime" id="datetime">Loading…</div>
             <button class="dark-toggle" id="darkToggle" aria-label="Toggle dark mode">Dark Mode</button>
         </header>
@@ -221,13 +236,29 @@
                     <li><label><input type="checkbox"><span>Side project: habit tracker</span></label></li>
                 </ul>
             </article>
+            <article class="card goals">
+                <h2>Goals</h2>
+                <ul>
+                    <li><label><input type="checkbox"><span>Ship MVP by end of quarter</span></label></li>
+                    <li><label><input type="checkbox"><span>Complete certification course</span></label></li>
+                    <li><label><input type="checkbox"><span>Run 3x per week</span></label></li>
+                </ul>
+            </article>
         </section>
     </div>
 
     <script>
+        function getGreeting() {
+            const hour = new Date().getHours();
+            if (hour < 12) return 'Good morning';
+            if (hour < 17) return 'Good afternoon';
+            return 'Good evening';
+        }
+
         function updateDateTime() {
-            const el = document.getElementById('datetime');
             const now = new Date();
+            document.getElementById('greeting').textContent = getGreeting();
+            const el = document.getElementById('datetime');
             const dateStr = now.toLocaleDateString('en-US', {
                 weekday: 'short',
                 month: 'short',
