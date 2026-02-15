@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chris's Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(145deg, #f0f4f8 0%, #e2e8f0 50%, #f8fafc 100%);
+            min-height: 100vh;
+            color: #334155;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1e293b;
+            letter-spacing: -0.02em;
+        }
+
+        .datetime {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #64748b;
+            background: #fff;
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .card ul {
+            list-style: none;
+        }
+
+        .card li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #475569;
+            font-size: 0.95rem;
+        }
+
+        .card li label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            flex: 1;
+            transition: color 0.2s ease;
+        }
+
+        .card li input[type="checkbox"] {
+            width: 1.1rem;
+            height: 1.1rem;
+            accent-color: #3b82f6;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .card li input[type="checkbox"]:checked + span {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+
+        .card.tasks li input[type="checkbox"] { accent-color: #3b82f6; }
+        .card.notes li input[type="checkbox"] { accent-color: #22c55e; }
+        .card.ideas li input[type="checkbox"] { accent-color: #8b5cf6; }
+
+        /* Dark mode toggle */
+        .dark-toggle {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            color: #334155;
+            font-weight: 500;
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        /* Dark mode styles */
+        body.dark {
+            background: linear-gradient(145deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #cbd5e1;
+        }
+
+        body.dark h1 {
+            color: #f1f5f9;
+        }
+
+        body.dark header {
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark .datetime {
+            background: #1e293b;
+            color: #94a3b8;
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark .dark-toggle {
+            background: #1e293b;
+            color: #cbd5e1;
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark .card {
+            background: #1e293b;
+            border-color: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark .card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark .card h2 {
+            color: #f1f5f9;
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+
+        body.dark .card li {
+            color: #94a3b8;
+        }
+
+        body.dark .card li input[type="checkbox"]:checked + span {
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Chris's Dashboard</h1>
+            <div class="datetime" id="datetime">Loading…</div>
+            <button class="dark-toggle" id="darkToggle" aria-label="Toggle dark mode">Dark Mode</button>
+        </header>
+
+        <section class="cards">
+            <article class="card tasks">
+                <h2>Tasks</h2>
+                <ul>
+                    <li><label><input type="checkbox"><span>Review project proposal</span></label></li>
+                    <li><label><input type="checkbox"><span>Schedule team standup</span></label></li>
+                    <li><label><input type="checkbox"><span>Update documentation</span></label></li>
+                </ul>
+            </article>
+            <article class="card notes">
+                <h2>Notes</h2>
+                <ul>
+                    <li><label><input type="checkbox"><span>Meeting with design on Tuesday</span></label></li>
+                    <li><label><input type="checkbox"><span>API keys for staging env</span></label></li>
+                    <li><label><input type="checkbox"><span>Q2 goals draft</span></label></li>
+                </ul>
+            </article>
+            <article class="card ideas">
+                <h2>Ideas</h2>
+                <ul>
+                    <li><label><input type="checkbox"><span>Automate weekly reports</span></label></li>
+                    <li><label><input type="checkbox"><span>Try a new workflow tool</span></label></li>
+                    <li><label><input type="checkbox"><span>Side project: habit tracker</span></label></li>
+                </ul>
+            </article>
+        </section>
+    </div>
+
+    <script>
+        function updateDateTime() {
+            const el = document.getElementById('datetime');
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', {
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+            const timeStr = now.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+            el.textContent = dateStr + ' · ' + timeStr;
+        }
+
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
+        // Dark mode toggle with localStorage persistence
+        const toggle = document.getElementById('darkToggle');
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark');
+            toggle.textContent = 'Light Mode';
+        }
+        toggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            toggle.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+            localStorage.setItem('darkMode', isDark);
+        });
+    </script>
+</body>
+</html>
